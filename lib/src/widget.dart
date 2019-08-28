@@ -17,6 +17,8 @@ import 'style_sheet.dart';
 /// Used by [MarkdownWidget.onTapLink].
 typedef void MarkdownTapLinkCallback(String href);
 
+typedef void MarkdownTapDownLinkCallback(String href, TapDownDetails detail);
+
 /// Creates a format [TextSpan] given a string.
 ///
 /// Used by [MarkdownWidget] to highlight the contents of `pre` elements.
@@ -45,6 +47,7 @@ abstract class MarkdownWidget extends StatefulWidget {
     this.styleSheet,
     this.syntaxHighlighter,
     this.onTapLink,
+    this.onTapDownLink,
     this.imageDirectory,
   }) : assert(data != null),
        super(key: key);
@@ -64,6 +67,9 @@ abstract class MarkdownWidget extends StatefulWidget {
 
   /// Called when the user taps a link.
   final MarkdownTapLinkCallback onTapLink;
+
+  /// Called when user tap down and need some details about the tap details.
+  final MarkdownTapDownLinkCallback onTapDownLink;
 
   /// The base directory holding images referenced by Img tags with local file paths.
   final Directory imageDirectory;
@@ -132,6 +138,8 @@ class _MarkdownWidgetState extends State<MarkdownWidget> implements MarkdownBuil
       ..onTap = () {
       if (widget.onTapLink != null)
         widget.onTapLink(href);
+    }..onTapDown = (c) {
+        widget.onTapDownLink(href, c);
     };
     _recognizers.add(recognizer);
     return recognizer;
