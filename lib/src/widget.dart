@@ -48,6 +48,7 @@ abstract class MarkdownWidget extends StatefulWidget {
     this.syntaxHighlighter,
     this.onTapLink,
     this.onTapDownLink,
+    this.controller,
     this.imageDirectory,
   }) : assert(data != null),
        super(key: key);
@@ -70,6 +71,9 @@ abstract class MarkdownWidget extends StatefulWidget {
 
   /// Called when user tap down and need some details about the tap details.
   final MarkdownTapDownLinkCallback onTapDownLink;
+
+  /// Fullfill the controller for tap used.
+  final ScrollController controller;
 
   /// The base directory holding images referenced by Img tags with local file paths.
   final Directory imageDirectory;
@@ -212,6 +216,7 @@ class Markdown extends MarkdownWidget {
     SyntaxHighlighter syntaxHighlighter,
     MarkdownTapLinkCallback onTapLink,
     MarkdownTapDownLinkCallback onTapDownLink,
+    ScrollController controller,
     Directory imageDirectory,
     this.padding: const EdgeInsets.all(16.0),
   }) : super(
@@ -221,6 +226,7 @@ class Markdown extends MarkdownWidget {
     syntaxHighlighter: syntaxHighlighter,
     onTapLink: onTapLink,
     onTapDownLink: onTapDownLink,
+    controller: controller,
     imageDirectory: imageDirectory,
   );
 
@@ -229,6 +235,6 @@ class Markdown extends MarkdownWidget {
 
   @override
   Widget build(BuildContext context, List<Widget> children) {
-    return new ListView(padding: padding, children: children);
+    return new ListView(padding: padding, controller: controller ,children: children);
   }
 }
