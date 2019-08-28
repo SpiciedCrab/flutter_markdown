@@ -211,6 +211,7 @@ class Markdown extends MarkdownWidget {
     MarkdownStyleSheet styleSheet,
     SyntaxHighlighter syntaxHighlighter,
     MarkdownTapLinkCallback onTapLink,
+    MarkdownTapDownLinkCallback onTapDownLink,
     Directory imageDirectory,
     this.padding: const EdgeInsets.all(16.0),
   }) : super(
@@ -219,6 +220,7 @@ class Markdown extends MarkdownWidget {
     styleSheet: styleSheet,
     syntaxHighlighter: syntaxHighlighter,
     onTapLink: onTapLink,
+    onTapDownLink: onTapDownLink,
     imageDirectory: imageDirectory,
   );
 
