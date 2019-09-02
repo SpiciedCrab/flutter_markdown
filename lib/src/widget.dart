@@ -17,6 +17,8 @@ import 'style_sheet.dart';
 /// Used by [MarkdownWidget.onTapLink].
 typedef void MarkdownTapLinkCallback(String href);
 
+typedef void MarkdownLongTapTextCallback(String text);
+
 typedef void MarkdownTapDownLinkCallback(String href, TapDownDetails detail);
 
 /// Creates a format [TextSpan] given a string.
@@ -47,6 +49,7 @@ abstract class MarkdownWidget extends StatefulWidget {
     this.styleSheet,
     this.syntaxHighlighter,
     this.onTapLink,
+    this.onTextLongTapped,
     this.onTapDownLink,
     this.controller,
     this.imageDirectory,
@@ -71,6 +74,9 @@ abstract class MarkdownWidget extends StatefulWidget {
 
   /// Called when user tap down and need some details about the tap details.
   final MarkdownTapDownLinkCallback onTapDownLink;
+
+  /// Called on user long tapped the text except for the links.
+  final MarkdownLongTapTextCallback onTextLongTapped;
 
   /// Fullfill the controller for tap used.
   final ScrollController controller;
@@ -158,6 +164,13 @@ class _MarkdownWidgetState extends State<MarkdownWidget> implements MarkdownBuil
 
   @override
   Widget build(BuildContext context) => widget.build(context, _children);
+
+  @override
+  onTextLongTapped(String text) {
+    if(widget.onTextLongTapped != null) {
+      widget.onTextLongTapped(text);
+    }
+  }
 }
 
 /// A non-scrolling widget that parses and displays Markdown.
@@ -216,6 +229,7 @@ class Markdown extends MarkdownWidget {
     SyntaxHighlighter syntaxHighlighter,
     MarkdownTapLinkCallback onTapLink,
     MarkdownTapDownLinkCallback onTapDownLink,
+    MarkdownLongTapTextCallback onLongTapText,
     ScrollController controller,
     Directory imageDirectory,
     this.padding: const EdgeInsets.all(16.0),
@@ -225,6 +239,7 @@ class Markdown extends MarkdownWidget {
     styleSheet: styleSheet,
     syntaxHighlighter: syntaxHighlighter,
     onTapLink: onTapLink,
+    onTextLongTapped: onLongTapText,
     onTapDownLink: onTapDownLink,
     controller: controller,
     imageDirectory: imageDirectory,

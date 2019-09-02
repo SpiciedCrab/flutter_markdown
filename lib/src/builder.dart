@@ -75,6 +75,9 @@ abstract class MarkdownBuilderDelegate {
   ///
   /// The `styleSheet` is the value of [MarkdownBuilder.styleSheet].
   TextSpan formatText(MarkdownStyleSheet styleSheet, String code);
+
+  /// Called when user long tapped any text in the screen.
+  onTextLongTapped(String text);
 }
 
 /// Builds a [Widget] tree from parsed Markdown.
@@ -129,7 +132,7 @@ class MarkdownBuilder implements md.NodeVisitor {
     _addParentInlineIfNeeded(_blocks.last.tag);
 
     var longPress = LongPressGestureRecognizer()..onLongPress = (){
-      print(text.text);
+      delegate.onTextLongTapped(text.text);
     };
 
     final TextSpan span = _blocks.last.tag == 'pre'
