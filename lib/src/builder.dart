@@ -128,12 +128,16 @@ class MarkdownBuilder implements md.NodeVisitor {
 
     _addParentInlineIfNeeded(_blocks.last.tag);
 
+    var longPress = LongPressGestureRecognizer()..onLongPress = (){
+      print(text);
+    };
+
     final TextSpan span = _blocks.last.tag == 'pre'
       ? delegate.formatText(styleSheet, text.text)
       : new TextSpan(
           style: _inlines.last.style,
           text: text.text,
-          recognizer: _linkHandlers.isNotEmpty ? _linkHandlers.last : null,
+          recognizer: _linkHandlers.isNotEmpty ? _linkHandlers.last : longPress,
         );
 
     _inlines.last.children.add(new RichText(
