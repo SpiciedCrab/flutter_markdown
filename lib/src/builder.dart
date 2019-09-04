@@ -166,6 +166,7 @@ class MarkdownBuilder implements md.NodeVisitor {
       span,
       onTextTapped: selectionInfo?.onTextSelection,
       selectionEnabled: selectionInfo != null,
+      textSelectionControls: selectionInfo?.selectionControl,
       selectionColor: selectionInfo?.selectionColor ?? Colors.yellow,
       textScaleFactor: styleSheet.textScaleFactor,
     ));
@@ -379,6 +380,7 @@ class MarkdownBuilder implements md.NodeVisitor {
           mergedSpan,
           onTextTapped: selectionInfo?.onTextSelection,
           selectionEnabled: selectionInfo != null,
+          textSelectionControls: selectionInfo?.selectionControl,
           selectionColor: selectionInfo?.selectionColor ?? Colors.yellow,
           textScaleFactor: styleSheet.textScaleFactor,
         ));
