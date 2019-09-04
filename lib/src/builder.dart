@@ -10,6 +10,7 @@ import 'package:markdown/markdown.dart' as md;
 import 'package:path/path.dart' as p;
 
 import 'package:extended_text/extended_text.dart';
+import 'package:flutter/material.dart';
 
 import 'style_sheet.dart';
 
@@ -147,6 +148,8 @@ class MarkdownBuilder implements md.NodeVisitor {
 
     _inlines.last.children.add(new ExtendedText.rich(
       span,
+      selectionEnabled: true,
+      selectionColor: Colors.yellow,
       textScaleFactor: styleSheet.textScaleFactor,
     ));
   }
@@ -357,6 +360,8 @@ class MarkdownBuilder implements md.NodeVisitor {
         TextSpan mergedSpan = new TextSpan(children: children);
         mergedTexts.add(new ExtendedText.rich(
           mergedSpan,
+          selectionEnabled: true,
+          selectionColor: Colors.yellow,
           textScaleFactor: styleSheet.textScaleFactor,
         ));
       } else {
