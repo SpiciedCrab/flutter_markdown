@@ -9,6 +9,8 @@ import 'package:flutter/widgets.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:path/path.dart' as p;
 
+import 'package:extended_text/extended_text.dart';
+
 import 'style_sheet.dart';
 
 final Set<String> _kBlockTags = new Set<String>.from(<String>[
@@ -143,9 +145,9 @@ class MarkdownBuilder implements md.NodeVisitor {
           recognizer: _linkHandlers.isNotEmpty ? _linkHandlers.last : longPress,
         );
 
-    _inlines.last.children.add(new RichText(
+    _inlines.last.children.add(new ExtendedText.rich(
+      span,
       textScaleFactor: styleSheet.textScaleFactor,
-      text: span,
     ));
   }
 
@@ -345,17 +347,17 @@ class MarkdownBuilder implements md.NodeVisitor {
   List<Widget> _mergeInlineChildren(_InlineElement inline) {
     List<Widget> mergedTexts = <Widget>[];
     for (Widget child in inline.children) {
-      if (mergedTexts.isNotEmpty && mergedTexts.last is RichText && child is RichText) {
-        RichText previous = mergedTexts.removeLast();
-        TextSpan previousTextSpan = previous.text;
+      if (mergedTexts.isNotEmpty && mergedTexts.last is ExtendedText && child is ExtendedText) {
+        ExtendedText previous = mergedTexts.removeLast();
+        TextSpan previousTextSpan = previous.textSpan;
         List<TextSpan> children = previousTextSpan.children != null
             ? new List.from(previousTextSpan.children)
             : [previousTextSpan];
-        children.add(child.text);
+        children.add(child.textSpan);
         TextSpan mergedSpan = new TextSpan(children: children);
-        mergedTexts.add(new RichText(
+        mergedTexts.add(new ExtendedText.rich(
+          mergedSpan,
           textScaleFactor: styleSheet.textScaleFactor,
-          text: mergedSpan,
         ));
       } else {
         mergedTexts.add(child);

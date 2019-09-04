@@ -11,6 +11,7 @@ dependencies:
   meta: ^1.0.5
   string_scanner: ^1.0.0
   path: ^1.5.1
+  extended_text:
 
 dev_dependencies:
   flutter_test:
