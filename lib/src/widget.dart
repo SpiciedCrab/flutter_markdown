@@ -53,6 +53,7 @@ abstract class MarkdownWidget extends StatefulWidget {
     this.onTapDownLink,
     this.controller,
     this.imageDirectory,
+    this.onTextTapped
   }) : assert(data != null),
        super(key: key);
 
@@ -77,6 +78,9 @@ abstract class MarkdownWidget extends StatefulWidget {
 
   /// Called on user long tapped the text except for the links.
   final MarkdownLongTapTextCallback onTextLongTapped;
+
+  /// Called on user tapped the text except for the links.
+  final MarkdownLongTapTextCallback onTextTapped;
 
   /// Fullfill the controller for tap used.
   final ScrollController controller;
@@ -171,6 +175,13 @@ class _MarkdownWidgetState extends State<MarkdownWidget> implements MarkdownBuil
       widget.onTextLongTapped(text);
     }
   }
+
+  @override
+  onTextTapped(String text) {
+    if(widget.onTextTapped != null) {
+      widget.onTextTapped(text);
+    }
+  }
 }
 
 /// A non-scrolling widget that parses and displays Markdown.
@@ -230,6 +241,7 @@ class Markdown extends MarkdownWidget {
     MarkdownTapLinkCallback onTapLink,
     MarkdownTapDownLinkCallback onTapDownLink,
     MarkdownLongTapTextCallback onLongTapText,
+    MarkdownLongTapTextCallback onTextTapped,
     ScrollController controller,
     Directory imageDirectory,
     this.padding: const EdgeInsets.all(16.0),
@@ -242,6 +254,7 @@ class Markdown extends MarkdownWidget {
     onTextLongTapped: onLongTapText,
     onTapDownLink: onTapDownLink,
     controller: controller,
+    onTextTapped: onTextTapped,
     imageDirectory: imageDirectory,
   );
 

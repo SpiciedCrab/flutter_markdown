@@ -81,6 +81,9 @@ abstract class MarkdownBuilderDelegate {
 
   /// Called when user long tapped any text in the screen.
   onTextLongTapped(String text);
+
+  /// Called when user tapped any text in the screen.
+  onTextTapped(String text);
 }
 
 /// Builds a [Widget] tree from parsed Markdown.
@@ -148,6 +151,7 @@ class MarkdownBuilder implements md.NodeVisitor {
 
     _inlines.last.children.add(new ExtendedText.rich(
       span,
+      onTextTapped: delegate.onTextTapped,
       selectionEnabled: true,
       selectionColor: Colors.yellow,
       textScaleFactor: styleSheet.textScaleFactor,
@@ -360,6 +364,7 @@ class MarkdownBuilder implements md.NodeVisitor {
         TextSpan mergedSpan = new TextSpan(children: children);
         mergedTexts.add(new ExtendedText.rich(
           mergedSpan,
+          onTextTapped: delegate.onTextTapped,
           selectionEnabled: true,
           selectionColor: Colors.yellow,
           textScaleFactor: styleSheet.textScaleFactor,
