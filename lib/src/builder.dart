@@ -35,6 +35,20 @@ const List<String> _kListTags = const <String>['ul', 'ol'];
 bool _isBlockTag(String tag) => _kBlockTags.contains(tag);
 bool _isListTag(String tag) => _kListTags.contains(tag);
 
+/// Text Selection model to provide the style of selection
+class TextSelectionInfo {
+
+  /// SelectionControl
+  TextSelectionControls selectionControl;
+
+  /// Callback when user tapping the text.
+  Function(String) onTextSelection;
+
+  Color selectionColor;
+
+  TextSelectionInfo({this.selectionControl, this.onTextSelection, this.selectionColor});
+}
+
 class _BlockElement {
   _BlockElement(this.tag);
 
@@ -81,9 +95,6 @@ abstract class MarkdownBuilderDelegate {
 
   /// Called when user long tapped any text in the screen.
   onTextLongTapped(String text);
-
-  /// Called when user tapped any text in the screen.
-  onTextTapped(String text);
 }
 
 /// Builds a [Widget] tree from parsed Markdown.
@@ -93,13 +104,15 @@ abstract class MarkdownBuilderDelegate {
 ///  * [Markdown], which is a widget that parses and displays Markdown.
 class MarkdownBuilder implements md.NodeVisitor {
   /// Creates an object that builds a [Widget] tree from parsed Markdown.
-  MarkdownBuilder({ this.delegate, this.styleSheet, this.imageDirectory });
+  MarkdownBuilder({ this.delegate, this.styleSheet, this.imageDirectory , this.selectionInfo});
 
   /// A delegate that controls how link and `pre` elements behave.
   final MarkdownBuilderDelegate delegate;
 
   /// Defines which [TextStyle] objects to use for each type of element.
   final MarkdownStyleSheet styleSheet;
+
+  TextSelectionInfo selectionInfo;
 
   /// The base directory holding images referenced by Img tags with local file paths.
   final Directory imageDirectory;
@@ -151,9 +164,9 @@ class MarkdownBuilder implements md.NodeVisitor {
 
     _inlines.last.children.add(new ExtendedText.rich(
       span,
-      onTextTapped: delegate.onTextTapped,
-      selectionEnabled: true,
-      selectionColor: Colors.yellow,
+      onTextTapped: selectionInfo?.onTextSelection,
+      selectionEnabled: selectionInfo != null,
+      selectionColor: selectionInfo?.selectionColor ?? Colors.yellow,
       textScaleFactor: styleSheet.textScaleFactor,
     ));
   }
@@ -364,9 +377,9 @@ class MarkdownBuilder implements md.NodeVisitor {
         TextSpan mergedSpan = new TextSpan(children: children);
         mergedTexts.add(new ExtendedText.rich(
           mergedSpan,
-          onTextTapped: delegate.onTextTapped,
-          selectionEnabled: true,
-          selectionColor: Colors.yellow,
+          onTextTapped: selectionInfo?.onTextSelection,
+          selectionEnabled: selectionInfo != null,
+          selectionColor: selectionInfo?.selectionColor ?? Colors.yellow,
           textScaleFactor: styleSheet.textScaleFactor,
         ));
       } else {

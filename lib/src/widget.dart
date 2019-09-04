@@ -52,6 +52,7 @@ abstract class MarkdownWidget extends StatefulWidget {
     this.onTextLongTapped,
     this.onTapDownLink,
     this.controller,
+    this.selectionInfo,
     this.imageDirectory,
     this.onTextTapped
   }) : assert(data != null),
@@ -59,6 +60,9 @@ abstract class MarkdownWidget extends StatefulWidget {
 
   /// The Markdown to display.
   final String data;
+
+  /// The info provided to config the selection of the text.
+  final TextSelectionInfo selectionInfo;
 
   /// The styles to use when displaying the Markdown.
   ///
@@ -132,6 +136,7 @@ class _MarkdownWidgetState extends State<MarkdownWidget> implements MarkdownBuil
     final MarkdownBuilder builder = new MarkdownBuilder(
       delegate: this,
       styleSheet: styleSheet,
+      selectionInfo: widget.selectionInfo,
       imageDirectory: widget.imageDirectory,
     );
     _children = builder.build(document.parseLines(lines));
@@ -173,13 +178,6 @@ class _MarkdownWidgetState extends State<MarkdownWidget> implements MarkdownBuil
   onTextLongTapped(String text) {
     if(widget.onTextLongTapped != null) {
       widget.onTextLongTapped(text);
-    }
-  }
-
-  @override
-  onTextTapped(String text) {
-    if(widget.onTextTapped != null) {
-      widget.onTextTapped(text);
     }
   }
 }
@@ -241,9 +239,9 @@ class Markdown extends MarkdownWidget {
     MarkdownTapLinkCallback onTapLink,
     MarkdownTapDownLinkCallback onTapDownLink,
     MarkdownLongTapTextCallback onLongTapText,
-    MarkdownLongTapTextCallback onTextTapped,
     ScrollController controller,
     Directory imageDirectory,
+    TextSelectionInfo selectionInfo,
     this.padding: const EdgeInsets.all(16.0),
   }) : super(
     key: key,
@@ -254,8 +252,8 @@ class Markdown extends MarkdownWidget {
     onTextLongTapped: onLongTapText,
     onTapDownLink: onTapDownLink,
     controller: controller,
-    onTextTapped: onTextTapped,
     imageDirectory: imageDirectory,
+    selectionInfo: selectionInfo,
   );
 
   /// The amount of space by which to inset the children.

@@ -5,6 +5,9 @@
 /// A library to render markdown formatted text.
 library flutter_markdown;
 
+import 'package:extended_text/extended_text.dart';
 export 'src/builder.dart';
 export 'src/style_sheet.dart';
 export 'src/widget.dart';
+
+export 'package:extended_text/extended_text.dart';
