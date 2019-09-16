@@ -154,11 +154,17 @@ class MarkdownBuilder implements md.NodeVisitor {
       delegate.onTextLongTapped(text.text);
     };
 
+    String txt = Uri.decodeFull(text.text);
+    if(txt != null && txt.isNotEmpty && txt.contains('(')) {
+      txt = Uri.decodeFull(txt);
+    }
+
+
     final TextSpan span = _blocks.last.tag == 'pre'
-      ? delegate.formatText(styleSheet, text.text)
+      ? delegate.formatText(styleSheet, txt)
       : new TextSpan(
           style: _inlines.last.style,
-          text: text.text,
+          text: txt,
           recognizer: _linkHandlers.isNotEmpty ? _linkHandlers.last : longPress,
         );
 
