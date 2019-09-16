@@ -160,8 +160,8 @@ class MarkdownBuilder implements md.NodeVisitor {
       RegExp exp = new RegExp("(?<=\\()(.+?)(?=\\))");
       var list = exp.allMatches(txt);
       for (Match m in list) {
-        String txt = m.group(0);
-        txt = txt.replaceAll(txt, Uri.decodeFull(txt));
+        String matched = m.group(0);
+        txt = txt.replaceAll(matched, Uri.decodeFull(matched));
       }
     }
 
