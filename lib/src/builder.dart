@@ -155,8 +155,14 @@ class MarkdownBuilder implements md.NodeVisitor {
     };
 
     String txt = text.text;
-    if(txt != null && txt.isNotEmpty && txt.contains('(')) {
-      txt = Uri.decodeComponent(txt);
+
+    if(txt != null && txt.isNotEmpty) {
+      RegExp exp = new RegExp("(?<=\\()(.+?)(?=\\))");
+      var list = exp.allMatches(txt);
+      for (Match m in list) {
+        String txt = m.group(0);
+        txt = txt.replaceAll(txt, Uri.decodeFull(txt));
+      }
     }
 
 
