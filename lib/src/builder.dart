@@ -154,9 +154,9 @@ class MarkdownBuilder implements md.NodeVisitor {
       delegate.onTextLongTapped(text.text);
     };
 
-    String txt = Uri.decodeFull(text.text);
+    String txt = text.text;
     if(txt != null && txt.isNotEmpty && txt.contains('(')) {
-      txt = Uri.decodeFull(txt);
+      txt = Uri.decodeComponent(txt);
     }
 
 
