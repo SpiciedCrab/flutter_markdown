@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
@@ -161,7 +162,11 @@ class MarkdownBuilder implements md.NodeVisitor {
       var list = exp.allMatches(txt);
       for (Match m in list) {
         String matched = m.group(0);
-        txt = txt.replaceAll(matched, Uri.decodeFull(matched));
+        try {
+          txt = txt.replaceAll(matched, Uri.decodeFull(matched));
+        } catch(err) {
+          print(err);
+        }
       }
     }
 
