@@ -170,8 +170,7 @@ class MarkdownBuilder implements md.NodeVisitor {
       }
     }
 
-
-    final TextSpan span = _blocks.last.tag == 'pre'
+    final TextSpan span = _blocks.last.tag == 'pre' || _inlines.last.tag == 'code'
       ? delegate.formatText(styleSheet, txt)
       : new TextSpan(
           style: _inlines.last.style,
