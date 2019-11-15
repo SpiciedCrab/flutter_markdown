@@ -280,8 +280,13 @@ class MarkdownBuilder implements md.NodeVisitor {
       final _InlineElement parent = _inlines.last;
 
       if (tag == 'img') {
-        // create an image widget for this image
-        current.children.add(_buildImage(element.attributes['src']));
+        Widget extra = delegate.extraWidgetBuilder(tag, element.attributes);
+        if(extra != null) {
+          current.children.add(extra);
+        } else {
+          // create an image widget for this image
+          current.children.add(_buildImage(element.attributes['src']));
+        }
       } else if (tag == 'a') {
         _linkHandlers.removeLast();
       } else {
