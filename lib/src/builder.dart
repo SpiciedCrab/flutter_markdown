@@ -96,6 +96,9 @@ abstract class MarkdownBuilderDelegate {
 
   /// Called when user long tapped any text in the screen.
   onTextLongTapped(String text);
+
+  /// Extra elements builder
+  Widget extraWidgetBuilder(String tag, Map<String, String> element);
 }
 
 /// Builds a [Widget] tree from parsed Markdown.
@@ -281,8 +284,12 @@ class MarkdownBuilder implements md.NodeVisitor {
         current.children.add(_buildImage(element.attributes['src']));
       } else if (tag == 'a') {
         _linkHandlers.removeLast();
+      } else {
+        Widget extra = delegate.extraWidgetBuilder(tag, element.attributes);
+        if(extra != null) {
+          current.children.add(extra);
+        }
       }
-
       if (current.children.isNotEmpty) {
         parent.children.addAll(current.children);
       }

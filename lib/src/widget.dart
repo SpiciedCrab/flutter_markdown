@@ -19,6 +19,8 @@ typedef void MarkdownTapLinkCallback(String href);
 
 typedef void MarkdownLongTapTextCallback(String text);
 
+typedef Widget MarkdownWidgetBuilder(String tag, Map<String, String> element);
+
 typedef void MarkdownTapDownLinkCallback(String href, TapDownDetails detail);
 
 /// Creates a format [TextSpan] given a string.
@@ -54,7 +56,8 @@ abstract class MarkdownWidget extends StatefulWidget {
     this.controller,
     this.selectionInfo,
     this.imageDirectory,
-    this.onTextTapped
+    this.onTextTapped,
+    this.extraWidgetBuilder
   }) : assert(data != null),
        super(key: key);
 
@@ -82,6 +85,9 @@ abstract class MarkdownWidget extends StatefulWidget {
 
   /// Called on user long tapped the text except for the links.
   final MarkdownLongTapTextCallback onTextLongTapped;
+
+  /// Called while the tag is not defined
+  final MarkdownWidgetBuilder extraWidgetBuilder;
 
   /// Called on user tapped the text except for the links.
   final MarkdownLongTapTextCallback onTextTapped;
@@ -180,6 +186,13 @@ class _MarkdownWidgetState extends State<MarkdownWidget> implements MarkdownBuil
       widget.onTextLongTapped(text);
     }
   }
+
+  @override
+  Widget extraWidgetBuilder(String tag, Map<String, String> element) {
+    if(widget.extraWidgetBuilder != null) {
+      widget.extraWidgetBuilder(tag, element);
+    }
+  }
 }
 
 /// A non-scrolling widget that parses and displays Markdown.
@@ -242,6 +255,7 @@ class Markdown extends MarkdownWidget {
     ScrollController controller,
     Directory imageDirectory,
     TextSelectionInfo selectionInfo,
+    MarkdownWidgetBuilder extraWidgetBuilder,
     this.padding: const EdgeInsets.all(16.0),
   }) : super(
     key: key,
@@ -254,6 +268,7 @@ class Markdown extends MarkdownWidget {
     controller: controller,
     imageDirectory: imageDirectory,
     selectionInfo: selectionInfo,
+    extraWidgetBuilder: extraWidgetBuilder
   );
 
   /// The amount of space by which to inset the children.
