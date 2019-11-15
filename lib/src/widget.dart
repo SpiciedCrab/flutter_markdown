@@ -190,7 +190,9 @@ class _MarkdownWidgetState extends State<MarkdownWidget> implements MarkdownBuil
   @override
   Widget extraWidgetBuilder(String tag, Map<String, String> element) {
     if(widget.extraWidgetBuilder != null) {
-      widget.extraWidgetBuilder(tag, element);
+      return widget.extraWidgetBuilder(tag, element);
+    } else {
+      return null;
     }
   }
 }
